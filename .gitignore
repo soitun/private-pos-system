@@ -1,0 +1,22 @@
+
+# Node and related ecosystem
+# =============================
+node_modules/
+.DS_Store
+dist/
+npm-debug.log
+
+# General
+# =======
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.tmp
+*.bak
+*.swp
+logs/
+build/
+.idea/

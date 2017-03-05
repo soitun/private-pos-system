@@ -1,0 +1,22 @@
+
+<h2>Order Detail Page</h2>
+
+<div class="container">
+  <div class="row">
+    <div class="card card-block">
+      <h4 class="card-title">{{ order.name }}</h4>
+      <p class="card-text">{{ order.phone }}</p>
+      <p class="card-text">{{ order.address }}</p>
+      <p class="card-text">{{ order.isPickup }}</p>
+      <p class="card-text">{{ order.price }}</p>
+      <p class="card-text">{{ order.finishTime }}</p>
+      <p class="card-text">{{ order.addInfo }}</p>
+      <p class="card-text">{{ order.pearl }}</p>
+      <p class="card-text">{{ order.isFinished }}</p>
+      <a [routerLink]="['/orders']" class="card-link">Go Back To Order List</a>
+      <a [routerLink]="['/customers']" class="card-link">Customer List</a>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

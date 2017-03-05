@@ -1,0 +1,23 @@
+
+<h2>Order List Page</h2>
+
+<div class="container">
+  <div class="row" *ngFor="let order of orders">
+    <div class="card card-block">
+      <h4 class="card-title">{{ order.name }}</h4>
+      <p class="card-text">{{ order.phone }}</p>
+      <p class="card-text">{{ order.address }}</p>
+      <p class="card-text">{{ order.isPickup }}</p>
+      <p class="card-text">{{ order.price }}</p>
+      <p class="card-text">{{ order.finishTime }}</p>
+      <p class="card-text">{{ order.addInfo }}</p>
+      <p class="card-text">{{ order.pearl }}</p>
+      <p class="card-text">{{ order.isFinished }}</p>
+      <a [routerLink]="['/orders']" class="card-link">Order List</a>
+      <a [routerLink]="['/customers']" class="card-link">Customer List</a>
+      <a [routerLink]="['/orders', order._id]">Order Detail</a>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
