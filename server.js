@@ -12,6 +12,7 @@ const app = express();
 
 var mongoose = require('mongoose');
 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/POS-system');
 
 // Parsers for POST data

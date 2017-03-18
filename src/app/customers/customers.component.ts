@@ -12,7 +12,6 @@ export class CustomersComponent implements OnInit {
   @ViewChild('input')
   input: ElementRef;
   customers: any[] = [];
-  orderCount: number = 0;
 
   constructor(private customersService: CustomersService) { }
 
@@ -24,13 +23,6 @@ export class CustomersComponent implements OnInit {
     eventObservable.subscribe();
   }
 
-  submitForm(form: any): void{
-    console.log(form.valueOf('name'));
-    console.log('Form Data: ');
-    console.log(form);
-    // this.customersService.addCustomer(form).subscribe();
-    // this.router.navigateByUrl('/customers');
-  }
 }
 
 @Pipe({

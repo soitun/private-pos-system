@@ -1,24 +1,82 @@
 
-<h2>Current Order List Page</h2>
-
 <order-form></order-form>
 
+
+<div class="col-xs-10 offset-xs-1 col-md-6"><h4>Search Customer <input #input placeholder="Search" id="search"></h4></div>
+
 <div class="container">
-  <div class="row" *ngFor="let order of orders">
+<div class="col-xs-12">
+  <div class="row" *ngFor="let order of orders | OrderPipe: input.value; let i = index;">
     <div class="card card-block">
-      <h4 class="card-title">{{ order.name }}</h4>
-      <p class="card-text">{{ order.phone }}</p>
-      <p class="card-text">{{ order.address }}</p>
-      <p class="card-text">{{ order.isPickup }}</p>
-      <p class="card-text">{{ order.price }}</p>
-      <p class="card-text">{{ order.finishTime }}</p>
-      <p class="card-text">{{ order.addInfo }}</p>
-      <p class="card-text">{{ order.pearl }}</p>
-      <p class="card-text">{{ order.isFinished }}</p>
-      <a [routerLink]="['/orders']" class="card-link">Order List</a>
-      <a [routerLink]="['/customers']" class="card-link">Customer List</a>
+      <div class="col-xs-8">
+      <h4 class="card-title">{{order.isPickup ? "Pick-Up" : "Delivery"}}</h4>
+      <p class="card-text" *ngIf="order.name">{{ order.phone }},  {{ order.name }}</p>
+      <p class="card-text" *ngIf="!order.name">{{ order.phone }}</p>
+      <p class="card-text" *ngIf="order.address && !order.isPickup">{{ order.address }}</p>
+      <p class="card-text">{{ order.finishTime | date:'short' }}</p>
+      <div *ngFor="let pizza of menus[i].pizzaObjs">
+        <div *ngIf="pizza.exclude && pizza.extra">
+          <h4 class="card-text">{{pizza.size}} {{ pizza.name }},  No: {{ pizza.exclude }},  Extra: {{ pizza.extra }}</h4>
+        </div>
+        <div *ngIf="pizza.exclude && !pizza.extra">
+          <h4 class="card-text">{{pizza.size}} {{ pizza.name }},  No: {{ pizza.exclude }}</h4>
+        </div>
+        <div *ngIf="!pizza.exclude && pizza.extra">
+          <h4 class="card-text">{{pizza.size}} {{ pizza.name }},  Extra: {{ pizza.extra }}</h4>
+        </div>
+        <div *ngIf="!pizza.exclude && !pizza.extra">
+          <h4 class="card-text">{{pizza.size}} {{ pizza.name }}</h4>
+        </div>
+      </div>
+      <div *ngFor="let side of menus[i].sideObjs">
+        <h4 class="card-text">{{ side.name }} with {{ side.pearl }}</h4>
+      </div>
+      <h4 class="card-text" *ngIf="order.addInfo">{{ order.addInfo }}</h4>
+
+      </div>
+      <div class="col-xs-3 offset-xs-1">
+        <button class="btn btn-success btn-sm" (click)="myModal.open()">Finished!</button>
+        <a [routerLink]="['/orders/edit', order._id]" class="btn btn-warning btn-sm">Edit</a>
+        <a *ngIf="order.customer" [routerLink]="['/customers', order.customer]" class="btn btn-primary btn-sm">customer</a>
+
+        <modal #myModal>
+          <modal-header>
+            <h1>{{order.isPickup ? "Pick-Up" : "Delivery"}}</h1>
+          </modal-header>
+          <modal-content>
+            <div *ngFor="let pizza of menus[i].pizzaObjs">
+              <div *ngIf="pizza.exclude && pizza.extra">
+                <h4 class="card-text">{{pizza.size}} {{ pizza.name }},  No: {{ pizza.exclude }},  Extra: {{ pizza.extra }}</h4>
+              </div>
+              <div *ngIf="pizza.exclude && !pizza.extra">
+                <h4 class="card-text">{{pizza.size}} {{ pizza.name }},  No: {{ pizza.exclude }}</h4>
+              </div>
+              <div *ngIf="!pizza.exclude && pizza.extra">
+                <h4 class="card-text">{{pizza.size}} {{ pizza.name }},  Extra: {{ pizza.extra }}</h4>
+              </div>
+              <div *ngIf="!pizza.exclude && !pizza.extra">
+                <h4 class="card-text">{{pizza.size}} {{ pizza.name }}</h4>
+              </div>
+            </div>
+            <div *ngFor="let side of menus[i].sideObjs">
+              <h4 class="card-text">{{ side.name }} with {{ side.pearl }}</h4>
+            </div>
+            <h4 class="card-text" *ngIf="order.addInfo">{{ order.addInfo }}</h4>
+            <p class="card-text" *ngIf="order.name">Phone & Name: {{ order.phone }},  {{ order.name }}</p>
+            <p class="card-text" *ngIf="!order.name">Phone: {{ order.phone }}</p>
+            <p class="card-text" *ngIf="order.address && !order.isPickup">Address: {{ order.address }}</p>
+            <p class="card-text">Prepare By: {{ order.finishTime | date:'short' }}</p>
+          </modal-content>
+          <modal-footer>
+            <button class="btn btn-warning" (click)="myModal.close()">close</button>
+            <button class="btn btn-primary" (click)="finishOrder(order._id)">Finished!</button>
+          </modal-footer>
+        </modal>
+
+    </div>
     </div>
   </div>
+</div>
 </div>
 
 <router-outlet></router-outlet>

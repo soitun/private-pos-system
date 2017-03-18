@@ -11,6 +11,7 @@ export class OrderDetailComponent implements OnInit {
 
   _id: any = "";
   order: any = "";
+  menu: any = "";
 
   constructor(private route: ActivatedRoute, private ordersService: OrdersService) { }
 
@@ -19,12 +20,10 @@ export class OrderDetailComponent implements OnInit {
       this._id = params['id'];
     });
 
-    this.ordersService.getOrder(this._id).subscribe(order => {
-      this.order = order;
+    this.ordersService.getOrder(this._id).subscribe(obj => {
+      this.order = obj[0];
+      this.menu = obj[1];
     });
-
-    // console.log("_id in Component: " + this._id);
-    // console.log("order in Component: " + this.order);
   }
 
 }

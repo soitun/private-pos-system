@@ -1,20 +1,41 @@
 
-<h2>Order Detail Page</h2>
-
 <div class="container">
   <div class="row">
-    <div class="card card-block">
-      <h4 class="card-title">{{ order.name }}</h4>
-      <p class="card-text">{{ order.phone }}</p>
-      <p class="card-text">{{ order.address }}</p>
-      <p class="card-text">{{ order.isPickup }}</p>
-      <p class="card-text">{{ order.price }}</p>
-      <p class="card-text">{{ order.finishTime }}</p>
-      <p class="card-text">{{ order.addInfo }}</p>
-      <p class="card-text">{{ order.pearl }}</p>
-      <p class="card-text">{{ order.isFinished }}</p>
-      <a [routerLink]="['/orders']" class="card-link">Go Back To Order List</a>
-      <a [routerLink]="['/customers']" class="card-link">Customer List</a>
+    <div class="col-xs-12">
+      <div class="card card-block">
+        <div class="col-xs-8">
+          <h4 class="card-title" *ngIf="order.isFinished">Phone: {{ order.phone }}, Finished</h4>
+          <h4 class="card-title" *ngIf="!order.isFinished">Phone: {{ order.phone }}, Preparing</h4>
+        </div>
+        <div class="col-xs-2 offset-xs-2">
+          <a [routerLink]="['/orders/edit', order._id]" class="btn btn-primary btn-sm">Edit</a>
+        </div>
+        <div class="col-xs-12">
+          <p class="card-text">Name: {{ order.name }}</p>
+          <p class="card-text" *ngIf="order.address && !order.isPickup">Address: {{ order.address }}</p>
+          <p class="card-text">Order Finishing Time: {{ order.finishTime | date:'short' }}</p>
+          <p class="card-text">Type: {{order.isPickup ? "Pick-Up" : "Delivery"}}</p>
+          <div *ngFor="let pizza of menu.pizzaObjs">
+            <div *ngIf="pizza.exclude && pizza.extra">
+              <p><b>{{pizza.size}} {{ pizza.name }}, No: {{ pizza.exclude }}, Extra: {{ pizza.extra }}</b></p>
+            </div>
+            <div *ngIf="pizza.exclude && !pizza.extra">
+              <p><b>{{pizza.size}} {{ pizza.name }}, No: {{ pizza.exclude }}</b></p>
+            </div>
+            <div *ngIf="!pizza.exclude && pizza.extra">
+              <p><b>{{pizza.size}} {{ pizza.name }}, Extra: {{ pizza.extra }}</b></p>
+            </div>
+            <div *ngIf="!pizza.exclude && !pizza.extra">
+              <p><b>{{pizza.size}} {{ pizza.name }}</b></p>
+            </div>
+          </div>
+          <div *ngFor="let side of menu.sideObjs">
+            <p><b>{{ side.name }} with {{ side.pearl }}</b></p>
+          </div>
+          <p class="card-text"><b>Additional Info: {{ order.addInfo }}</b></p>
+          <a [routerLink]="['/orders']" class="card-link">Back To Order List</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>

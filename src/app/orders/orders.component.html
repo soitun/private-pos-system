@@ -1,23 +1,73 @@
 
-<h2>Order List Page</h2>
-
 <div class="container">
-  <div class="row" *ngFor="let order of orders">
-    <div class="card card-block">
-      <h4 class="card-title">{{ order.name }}</h4>
-      <p class="card-text">{{ order.phone }}</p>
-      <p class="card-text">{{ order.address }}</p>
-      <p class="card-text">{{ order.isPickup }}</p>
-      <p class="card-text">{{ order.price }}</p>
-      <p class="card-text">{{ order.finishTime }}</p>
-      <p class="card-text">{{ order.addInfo }}</p>
-      <p class="card-text">{{ order.pearl }}</p>
-      <p class="card-text">{{ order.isFinished }}</p>
-      <a [routerLink]="['/orders']" class="card-link">Order List</a>
-      <a [routerLink]="['/customers']" class="card-link">Customer List</a>
-      <a [routerLink]="['/orders', order._id]">Order Detail</a>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="margin-20">
+        <h4>Search Orders!</h4>
+      </div>
+      <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" phone formControlName="phone" (rawChange)="rawPhone=$event" class="form-control">
+          <small>검색시 페이지 목록 1에 있어야 함</small>
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <input type="text" class="form-control" formControlName="address">
+          <small>Address를 우선적으로 검색 함</small>
+        </div>
+
+        <div class="margin-20">
+          <button type="submit" class="btn btn-primary pull-right">Search!</button>
+        </div>
+        <div class="clearfix"></div>
+      </form>
     </div>
   </div>
 </div>
+
+<br>
+
+
+<div class="col-xs-12">
+<div class="container">
+  <div class="row" *ngFor="let order of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
+    <div class="card card-block">
+      <div class="col-xs-8">
+        <h4 class="card-title">Phone: {{ order.phone }}</h4>
+        <p class="card-text">Name: {{ order.name }}</p>
+        <p class="card-text" *ngIf="order.address && !order.isPickup">Address: {{ order.address }}</p>
+        <p class="card-text">Order Finishing Time: {{ order.finishTime | date:'short' }}</p>
+        <p class="card-text">Type: {{order.isPickup ? "Pick-Up" : "Delivery"}}</p>
+        <div *ngFor="let pizza of menus[i].pizzaObjs">
+          <div *ngIf="pizza.exclude && pizza.extra">
+            <h4 class="card-text">{{pizza.size}} {{ pizza.name }},  No: {{ pizza.exclude }},  Extra: {{ pizza.extra }}</h4>
+          </div>
+          <div *ngIf="pizza.exclude && !pizza.extra">
+            <h4 class="card-text">{{pizza.size}} {{ pizza.name }},  No: {{ pizza.exclude }}</h4>
+          </div>
+          <div *ngIf="!pizza.exclude && pizza.extra">
+            <h4 class="card-text">{{pizza.size}} {{ pizza.name }},  Extra: {{ pizza.extra }}</h4>
+          </div>
+          <div *ngIf="!pizza.exclude && !pizza.extra">
+            <h4 class="card-text">{{pizza.size}} {{ pizza.name }}</h4>
+          </div>
+        </div>
+        <div *ngFor="let side of menus[i].sideObjs">
+          <h4 class="card-text">{{ side.name }} with {{ side.pearl }}</h4>
+        </div>
+        <h4 class="card-text" *ngIf="order.addInfo">{{ order.addInfo }}</h4>
+      </div>
+      <div class="col-xs-4">
+        <a [routerLink]="['/orders', order._id]" class="btn btn-warning btn-sm">Order Detail</a>
+        <a [routerLink]="['/orders/edit', order._id]" class="btn btn-info btn-sm">Edit</a>
+        <a *ngIf="order.customer" [routerLink]="['/customers', order.customer]" class="btn btn-primary btn-sm">customer</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<pagination-controls (pageChange)="p = $event"></pagination-controls>
 
 <router-outlet></router-outlet>

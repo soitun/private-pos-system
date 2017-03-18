@@ -13,20 +13,26 @@ import {FormGroup, FormBuilder, FormArray} from "@angular/forms";
         <h4>Add customer</h4>
       </div>
       <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
-        <div class="form-group">
+        <div class="form-group col-xs-3">
           <label>Phone</label>
-          <input type="text" class="form-control" formControlName="phone">
+          <input type="text" phone formControlName="phone" (rawChange)="rawPhone=$event" class="form-control">
         </div>
-        <div class="form-group">
+        <div class="form-group col-xs-3">
           <label>Name</label>
           <input type="text" class="form-control" formControlName="name">
         </div>
-        <div class="form-group">
-          <label>Phone</label>
+        <div class="form-group col-xs-6">
+          <label>Address</label>
           <input type="text" class="form-control" formControlName="address">
         </div>
+        <div class="form-group">
+          <label>P or D</label>
+          <select class="custom-select mb-2 mr-sm-2 mb-sm-0" formControlName="isPickup">
+            <option value="P">Pick Up</option>
+            <option value="D">Delivery</option>
+          </select>
+        </div>
         
-        <!--addresses-->
         <div formArrayName="menus">
           <div *ngFor="let menu of myForm.controls.menus.controls; let i=index" class="panel panel-default">
             <div class="panel-heading">
@@ -40,25 +46,24 @@ import {FormGroup, FormBuilder, FormArray} from "@angular/forms";
         </div>
 
         <div class="margin-20">
-          <a (click)="addMenu()" style="cursor: default">
+          <a class="btn btn-secondary" (click)="addMenu()" style="cursor: default">
             Add another menu +
           </a>
         </div>
         
-        <div class="form-group">
+        <div class="form-group col-xs-4">
+          <label>Preparing Time</label>
+          <input type="text" default="" class="form-control" formControlName="timeLeft">
+        </div>
+        <div class="form-group col-xs-8">
           <label>Description</label>
           <input type="text" class="form-control" formControlName="description">
         </div>
         
         <div class="margin-20">
-          <button type="submit" class="btn btn-primary pull-right">Submit</button>
+          <button type="submit" class="btn btn-primary pull-right">Add Order !</button>
         </div>
         <div class="clearfix"></div>
-
-        <div class="margin-20">
-          <div>myForm details:-</div>
-          <pre>form value: <br>{{myForm.value | json}}</pre>
-        </div>
       </form>
     </div>
   </div>
@@ -67,26 +72,23 @@ import {FormGroup, FormBuilder, FormArray} from "@angular/forms";
 })
 export class OrderFormComponent implements OnInit {
 
-  public myForm: FormGroup;
+  myForm: FormGroup;
 
-  constructor(private _fb: FormBuilder) { }
+  constructor(private _fb: FormBuilder, private ordersService: OrdersService, private router: Router) { }
 
   ngOnInit() {
     this.myForm = this._fb.group({
+      isPickup: [''],
       phone: [''],
       name: [''],
       address: [''],
       menus: this._fb.array([]),
+      timeLeft: [''],
       description: ['']
     });
 
     // add address
     this.addMenu();
-
-    /* subscribe to addresses value changes */
-    // this.myForm.controls['addresses'].valueChanges.subscribe(x => {
-    //   console.log(x);
-    // })
   }
 
   initMenu() {
@@ -105,11 +107,6 @@ export class OrderFormComponent implements OnInit {
     const menuCtrl = this.initMenu();
 
     control.push(menuCtrl);
-
-    /* subscribe to individual address value changes */
-    // addrCtrl.valueChanges.subscribe(x => {
-    //   console.log(x);
-    // })
   }
 
   removeMenu(i: number) {
@@ -118,9 +115,8 @@ export class OrderFormComponent implements OnInit {
   }
 
   onSubmit(form: any) {
-    console.log(form.value);
-    console.log(form.value.menus);
-    console.log(form.value.menus[0]);
+    this.ordersService.addOrder(form).subscribe();
+    this.router.navigateByUrl('/finished');
   }
 
 }
