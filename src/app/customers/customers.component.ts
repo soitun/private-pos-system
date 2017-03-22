@@ -35,6 +35,7 @@ export class NamePipe implements PipeTransform {
     return data.filter(customer => {
       return (customer.name.toUpperCase().indexOf(searchTerm) !== -1) ||
         (customer.phone.toUpperCase().indexOf(searchTerm) !== -1) ||
+        (customer.description.toUpperCase().indexOf(searchTerm) !== -1) ||
         (customer.address.toUpperCase().indexOf(searchTerm) !== -1)
     });
   }
