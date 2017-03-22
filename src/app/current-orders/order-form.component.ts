@@ -87,7 +87,6 @@ export class OrderFormComponent implements OnInit {
       description: ['']
     });
 
-    // add address
     this.addMenu();
   }
 
