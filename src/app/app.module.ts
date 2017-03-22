@@ -24,6 +24,7 @@ import {OrderEditComponent} from "./order-detail/order-edit.component";
 import {PaginationService, PaginatePipe, PaginationControlsCmp} from "ng2-paginate";
 import {ChartsModule} from "ng2-charts";
 import {ChartsComponent} from "./charts/charts.component";
+import {SelectModule} from "angular2-select";
 
 const ROUTES = [
   {
@@ -98,7 +99,8 @@ const ROUTES = [
     RouterModule.forRoot(ROUTES),
     ReactiveFormsModule,
     ModalModule,
-    ChartsModule
+    ChartsModule,
+    SelectModule
   ],
   providers: [CustomersService, OrdersService, PaginationService],
   bootstrap: [AppComponent]

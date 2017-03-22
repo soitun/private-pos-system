@@ -30,6 +30,13 @@ import {FormBuilder, FormGroup} from "@angular/forms";
             <button type="submit" class="btn btn-primary pull-right">Draw Chart!</button>
           </div>
           <div class="clearfix"></div>
+          
+          <!--&lt;!&ndash;Show Form Data as JSON&ndash;&gt;-->
+          <!--<div class="margin-20">-->
+            <!--<div>myForm details:-</div>-->
+            <!--<pre>form value: <br>{{myForm.value | json}}</pre>-->
+          <!--</div>-->
+          
         </form>
       </div>
     </div>

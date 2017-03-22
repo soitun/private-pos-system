@@ -32,7 +32,7 @@
           <div *ngFor="let side of menu.sideObjs">
             <p><b>{{ side.name }} with {{ side.pearl }}</b></p>
           </div>
-          <p class="card-text"><b>Additional Info: {{ order.addInfo }}</b></p>
+          <p class="card-text" *ngIf="order.addInfo"><b>Additional Info: {{ order.addInfo }}</b></p>
           <a [routerLink]="['/orders']" class="card-link">Back To Order List</a>
         </div>
       </div>
